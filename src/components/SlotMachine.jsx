@@ -28,46 +28,51 @@ const SlotMachine = ({ isSpinning, onStop }) => {
       setPosition(currentEquivalent);
       positionRef.current = currentEquivalent;
       
-      // 2. Start the spin after a tiny delay
-      setTimeout(() => {
-        const winningGameIndex = Math.floor(Math.random() * GAMES.length);
-        const stopIndex = (MULTIPLIER - 5) * GAMES.length + winningGameIndex;
-        
-        const spinTime = 4000;
-        setTransitionDuration(spinTime / 1000);
-        setPosition(stopIndex);
-        
-        const totalItemsToCross = stopIndex - positionRef.current;
-        positionRef.current = stopIndex;
-
-        // Approximate tick sounds based on CSS easeOut
-        let startTime = Date.now();
-        let lastItemCrossed = 0;
-        
-        const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
-
-        const checkTick = () => {
-          const elapsed = Date.now() - startTime;
-          const progress = Math.min(elapsed / spinTime, 1);
-          const currentEasedProgress = easeOutQuart(progress);
-          const currentItem = Math.floor(currentEasedProgress * totalItemsToCross);
-          
-          if (currentItem > lastItemCrossed) {
-            playTickSound();
-            lastItemCrossed = currentItem;
+      // 2. Start the spin after forcing the browser to paint the 0s transition reset
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          let winningGameIndex = Math.floor(Math.random() * GAMES.length);
+          // Ensure we don't pick the same game twice in a row
+          if (winningGameIndex === (positionRef.current % GAMES.length)) {
+            winningGameIndex = (winningGameIndex + Math.floor(Math.random() * (GAMES.length - 1)) + 1) % GAMES.length;
           }
+          const stopIndex = (MULTIPLIER - 5) * GAMES.length + winningGameIndex;
           
-          if (progress < 1) {
-            spinIntervalRef.current = requestAnimationFrame(checkTick);
-          } else {
-            playWinSound();
-            onStop();
-          }
-        };
-        
-        spinIntervalRef.current = requestAnimationFrame(checkTick);
-        
-      }, 50);
+          const spinTime = 4000;
+          setTransitionDuration(spinTime / 1000);
+          setPosition(stopIndex);
+          
+          const totalItemsToCross = stopIndex - positionRef.current;
+          positionRef.current = stopIndex;
+
+          // Approximate tick sounds based on CSS easeOut
+          let startTime = Date.now();
+          let lastItemCrossed = 0;
+          
+          const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+
+          const checkTick = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / spinTime, 1);
+            const currentEasedProgress = easeOutQuart(progress);
+            const currentItem = Math.floor(currentEasedProgress * totalItemsToCross);
+            
+            if (currentItem > lastItemCrossed) {
+              playTickSound();
+              lastItemCrossed = currentItem;
+            }
+            
+            if (progress < 1) {
+              spinIntervalRef.current = requestAnimationFrame(checkTick);
+            } else {
+              playWinSound();
+              onStop();
+            }
+          };
+          
+          spinIntervalRef.current = requestAnimationFrame(checkTick);
+        });
+      });
     }
     
     return () => {
