@@ -27,6 +27,11 @@ export const playTickSound = () => {
 
   osc.start();
   osc.stop(audioCtx.currentTime + 0.03);
+  
+  osc.onended = () => {
+    osc.disconnect();
+    gainNode.disconnect();
+  };
 };
 
 export const playWinSound = () => {
@@ -51,5 +56,10 @@ export const playWinSound = () => {
 
     osc.start(audioCtx.currentTime + index * 0.1);
     osc.stop(audioCtx.currentTime + index * 0.1 + 1.0);
+    
+    osc.onended = () => {
+      osc.disconnect();
+      gainNode.disconnect();
+    };
   });
 };
