@@ -6,6 +6,7 @@ import './index.css';
 function App() {
   const [isSpinning, setIsSpinning] = useState(false);
   const [audioInitialized, setAudioInitialized] = useState(false);
+  const [spinCount, setSpinCount] = useState(0);
 
   const handleSpin = () => {
     if (!audioInitialized) {
@@ -14,6 +15,7 @@ function App() {
     }
     if (!isSpinning) {
       setIsSpinning(true);
+      setSpinCount(c => c + 1);
     }
   };
 
@@ -23,7 +25,7 @@ function App() {
       <SlotMachine isSpinning={isSpinning} onStop={() => setIsSpinning(false)} />
       <div className={`bomb-button-container ${isSpinning ? 'spinning' : ''}`}>
         <div className="bomb-svg-container">
-          <svg viewBox="0 0 50 50" width="100%" height="100%">
+          <svg key={spinCount} viewBox="0 0 50 50" width="100%" height="100%">
             <defs>
               <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
                 <feGaussianBlur stdDeviation="2" result="blur" />
