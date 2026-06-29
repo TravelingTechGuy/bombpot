@@ -1,16 +1,40 @@
-# React + Vite
+# Bomb Pot Slot Machine 💣
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e70440c6-c477-480c-af02-530139b01c6b/deploy-status)](https://app.netlify.com/projects/bomb-pot/deploys)
 
-Currently, two official plugins are available:
+This is a mobile-responsive web application designed to be used during a friendly poker game. Once per orbit, a player can tap the "Select Game" button to randomly select a limit bomb pot game. The app features a realistic slot machine rolling animation, complete with synthesized Web Audio ticking and a winning chime.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Managing the Games List
 
-## React Compiler
+The list of games displayed on the slot machine roller is fully customizable and easily accessible. 
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+To add, modify, or remove games:
+1. Open the `src/games.json` file.
+2. Edit the array of text strings to include your desired games. 
+3. Save the file. The slot machine will automatically update and randomly select from your new list!
 
-## Expanding the Oxlint configuration
+*Example `src/games.json`:*
+```json
+[
+  "4 Card Omaha Hi",
+  "4 Card Omaha Hi-Lo",
+  "Crazy Pineapple Double Board"
+]
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## How to Publish to Netlify
+
+This project was built using React and Vite, making it incredibly easy to deploy as a fast, static site on Netlify.
+
+### Option 1: Drag and Drop (Easiest)
+1. Run `npm run build` in your terminal. This will create a `dist` folder containing the optimized, production-ready app.
+2. Log into your [Netlify](https://app.netlify.com/) account.
+3. Go to the **Sites** tab and simply drag-and-drop the entire `dist` folder into the deployment area.
+4. Your site will instantly go live!
+
+### Option 2: Continuous Deployment via GitHub
+1. Push this code repository to your GitHub account.
+2. In the Netlify dashboard, click **Add new site** -> **Import an existing project**.
+3. Select your GitHub repository.
+4. Netlify will automatically detect the Vite build settings (Build command: `npm run build`, Publish directory: `dist`).
+5. Click **Deploy site**. Netlify will now automatically rebuild and redeploy your app every time you push new code to the repository!
