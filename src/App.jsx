@@ -63,11 +63,9 @@ function App() {
         </button>
       </div>
 
-      {lastBomb && (
-        <div className="last-bomb-label">
-          Last bomb: <span>{lastBomb}</span>
-        </div>
-      )}
+      <div className={`last-bomb-label ${lastBomb ? 'visible' : ''}`}>
+        Last bomb: <span>{lastBomb}</span>
+      </div>
 
       <div className="footer-label">
         All rights reserved TravelingTech Guy LLC 2026
